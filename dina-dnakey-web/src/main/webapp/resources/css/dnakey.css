@@ -1,0 +1,316 @@
+/* 
+    Document   : dnakey.css
+    Created on : 2013-nov-22, 14:14:41
+    Author     : Sofia Ivarsson, Ida Li
+    Description: Baserad på NRMs grafiska profil och pollenrapporten -sitevision.
+    Stylesheet for DNA-key portal, NRM
+*/
+
+
+.body{
+    font-family: "Arial",sans-serif;
+    position: relative; 
+    min-height: 100%; 
+    top: 0px;
+}
+ 
+/*back*/
+.background{
+    background-color:#ebede8; 
+    background-repeat:no-repeat;
+    margin:0 0 0 0;
+}
+
+.back{
+    border:none;
+    width:100%;
+    min-width:0;
+    padding:0;
+    margin:0;
+    padding-top:7px;
+    padding-bottom:0px;
+    border-radius: 10px 10px 0 0;
+    float:none !important
+}
+
+.header {
+    font-size: 20px;
+    margin-top:10px;
+    margin-bottom: 30px;
+    color: #5e5e5e; 
+    font-family: "Arial",sans-serif;
+}
+
+.subheader{
+    font-weight: bold;
+}
+        
+.text {
+    font-family: "Arial",sans-serif;
+    color: #424242; 
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+ 
+/*foot*/
+#foot {
+    position: absoulte;
+    bottom: 0;
+    height: 125px;
+}
+
+.footstyle{
+    background-color:#686868;
+    margin:0 auto;
+    max-width:940px;
+    padding-bottom:20px;
+    padding-left:10px;
+    padding-right:10px;
+    -webkit-border-radius: 0px 0px 15px 15px;
+    border-radius: 0px 0px 15px 15px; 
+    float: left;
+    width: 100%;
+}
+
+.textfoot{ 
+    font-size: 10px;
+    color:#ffffff;
+    font-family: "Arial",sans-serif;   
+}
+
+
+/*top*/
+.roundedtop {
+  -webkit-border-radius: 15px 15px 0px 0px;
+  border-radius: 15px 15px 0px 0px;    
+}
+
+
+
+.top {
+    background-color:#9bba3f; /*#86ad16;*/
+    margin:0 auto;
+    max-width:960px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-bottom: 20px;
+    padding-top: 20px; 
+} 
+
+.topmenu {
+    background-color:#839127;  
+/*    margin-left:-10px; */
+    width:960px;
+    background-color: #436B16;
+}
+
+
+.topmenu a.current {
+    background: none repeat scroll 0 0 #419b1a; /*#0C7D0C;*/
+}
+
+.topmenu a {
+   width: auto;
+   padding: 12px 10px;
+   border-right: none;
+   border-right: 1px solid #4b7533;
+   color: #FFFFFF;
+   display: block;
+   font-family: "Arial",sans-serif;
+   font-size: 14px;
+   text-align: center;
+   text-decoration: none;
+   text-shadow: 1px 2px 1px #436b16; 
+   /* filter: dropshadow(color=#2e5900, offx=1, offy=1);*/
+}
+
+ 
+.topmenu li {
+   overflow: hidden;
+   position: relative;
+   float: left;
+   display: block;
+   width: auto;
+}
+
+.topmenu ul {
+    list-style-type: none;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+}
+
+
+
+
+
+/*main*/ 
+#main {
+    background-color: #ffffff;
+    margin:0 auto;
+    margin-top: -10px;
+    max-width:960px; 
+    padding:30px 0px 30px 0; 
+    float: left;
+}
+
+.mainimage{
+    width: 960px;
+} 
+
+.mainimage img {
+    width: 960px;
+}
+
+
+.noborder {
+    border-style: none;
+}
+
+.logoDNAkey {
+    max-height: 50px;
+    max-width: 370px;
+    margin-top: 45px;
+    margin-bottom: 40px;
+    margin-left: 20px;
+    max-width: 60%;
+}
+
+.logoNRM{
+    margin: 20px;
+    float: right;
+    max-width: 20%;
+}
+
+
+
+.columns{
+    margin-left:20px; 
+    margin-right: 20px; 
+    margin-top:20px; 
+    font-size: 14px; 
+    width: 960px;
+}
+
+.column1{
+    width: 500px; 
+    float:left;
+    margin-left: 20px;
+}
+
+.column2{
+    width: 20px; 
+    float:left;
+}
+
+.column3{
+    width: 360px; 
+    float:right;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.lonecolumn{
+    margin-left: 25%; 
+    width: 500px;
+}
+
+.blacktext {
+    color: #000000;
+    font-weight: bold;
+    font-family:  monospace;
+    font-size: 7px; 
+    font-size: 10px !important;  
+}
+
+.graytext { 
+    color:  #6E6E6E;
+    font-family:  monospace;
+    font-size: 7px; 
+    font-size: 10px !important;  
+}
+
+
+
+#map_canvas {
+    width:395px;  
+    overflow:hidden; 
+    float: left
+}
+
+#map_canvas svg {
+     margin-left: -200px;
+    margin-right: 350px;   
+    overflow: hidden;
+}
+
+.ui-tabs-nav {
+    font-size: 11px !important; 
+} 
+ 
+ 
+.ui-tabs .ui-tabs-panel {
+    border: none !important;
+      padding: 0px 0px 0px 0px; 
+      font-size: 11px;
+} 
+
+.ui-button-text {
+    background-color: #86AD16;
+}
+.ui-button-text-only .ui-button-text {
+    font-size: 9pt; 
+    color: black;
+}
+
+.originalbutton .ui-button-text {
+    background: #D2CFCF;
+}
+
+
+
+.ui-radiobutton .ui-radiobutton-box { 
+    bottom: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+ 
+.ui-icon-bullet {
+    background-position: -83px -146px !important;
+}
+
+.tooltip {
+    font-size: 12px; 
+    white-space: normal; 
+    width: 250px;  
+}
+
+.inprocess {
+    font-size: 16px; 
+    font-weight: bold;
+}
+
+
+#wrap { 
+   height:310px;
+   width:480px; 
+}
+
+.sequence {
+    height:300px;
+    width: 480px;
+    margin:0; 
+    padding:0;
+    vertical-align: top;
+    overflow: scroll; 
+    white-space: pre-wrap;
+    word-wrap: break-word; 
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+} 

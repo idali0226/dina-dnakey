@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"    
+      xmlns:h="http://java.sun.com/jsf/html"   >
+
+    <body> 
+        <ui:composition>        
+            <h:panelGrid styleClass="mainimage" cellpadding="0" cellspacing="0"  >
+                <h:form id="imageForm" prependId="false">    
+                    <h:panelGroup  styleClass="mainimage" layout="block" >
+                        <p:graphicImage value="#{imageBeans.image}" styleClass="img"   /> 
+                    </h:panelGroup>
+                </h:form> 
+            </h:panelGrid>
+
+        </ui:composition>
+    </body>
+
+</html>

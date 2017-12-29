@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <artifactId>dina-dnakey</artifactId>
+        <groupId>se.nrm.dina</groupId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+ 
+    <artifactId>dina-dnakey-web</artifactId> 
+    <packaging>war</packaging>
+
+    <name>${project.artifactId}</name>
+
+    <properties>
+        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir> 
+    </properties>
+    
+    <dependencies> 
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>dina-dnakey-logic</artifactId>
+            <version>${project.parent.version}</version> 
+        </dependency> 
+        
+        <!-- Wildfly Swarm Fractions -->
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>bean-validation</artifactId>
+        </dependency>
+        
+<!--        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>cdi</artifactId> 
+        </dependency>-->
+        
+                
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>ejb</artifactId> 
+        </dependency>
+        
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>jsf</artifactId>
+        </dependency>
+        
+<!--        <dependency>
+            <groupId>javax.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+        <dependency>  
+            <groupId>org.primefaces</groupId>  
+            <artifactId>primefaces</artifactId>   
+            <version>6.1</version>  
+        </dependency> 
+        
+<!--        <dependency>
+            <groupId>com.google.visualization</groupId>
+            <artifactId>visualization-datasource</artifactId>
+            <version>1.1.1</version>
+        </dependency>-->
+        
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>8.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins> 
+            <!--            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.0</version> 
+            </plugin>-->
+            <plugin>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>${version.wildfly.swarm}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <finalName>dnakey</finalName>
+    </build>
+
+</project>

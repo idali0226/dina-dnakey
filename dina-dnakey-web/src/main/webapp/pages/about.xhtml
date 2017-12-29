@@ -1,0 +1,876 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:p="http://primefaces.org/ui"   >
+    <body>
+        <ui:composition  template="/templates/masterLayout.xhtml">  
+            <ui:define name="content"  >   
+                <!-- ************************************** about dnakey page ************************************* --> 
+                <h:form  id="aboutForm"> 
+                    <h:panelGroup styleClass="columns" layout="block" id="keypanel"  >
+                        <p:remoteCommand 
+                            action="#{navigate.scrollToSection()}" 
+                            value="Scroll to section" autoRun="true" update="scrollSection"/>
+                        <p:remoteCommand 
+                                action="#{navigate.resetTopMenuCSS(2)}" 
+                                    value="Set topmenu css" autoRun="true" />
+
+                        <h:panelGroup styleClass="column1 lonecolumn" layout="block" rendered="#{languages.isSwedish}"> 
+                            <h:panelGroup  styleClass="header"  layout="block" >
+                                <h:outputText value="Om DNA-nyckeln" /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Med DNA-nyckelns sökverktyg kan man göra likhetssökningar mellan en okänd DNA sekvens (sk 
+                                <h:link value="frågesekvens" fragment="querysequence" style="text-decoration: none; color: #8B8786; "/>) och ett stort antal sekvenser lagrade i ett antal 
+                                <h:link value="databaser" fragment="database" style="text-decoration: none; color: #8B8786; " />. Den sökmetod som används här är 
+                                <h:link value="BLAST" fragment="blast" style="text-decoration: none; color: #8B8786; "/>, en statistisk metod för att snabbt hitta sekvensregioner, eller 
+                                <h:link value="träffsekvenser" fragment="hitsequences" style="text-decoration: none; color: #8B8786; "/>, med hög likhet.
+                            </h:panelGroup>    
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Resultaten av en sökning visas som en lista med de 10 bästa träffarna i den valda databasen för varje frågesekvens. För närvarande finns 
+                                en begränsning i maximala antalet sekvenser (100) som kan användas vid en individuell sökning.
+                            </h:panelGroup>   
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Om sökningen finner sekvenser i databasen med tillräckligt hög 
+                                <h:link value="likhet" fragment="likhet" style="text-decoration: none; color: #8B8786; " /> (≥99%), så visas resultaten och medföljande data för sekvensen i 
+                                databasen som en tabell med ett antal klickbara länkar. Beroende på vilken databas som används så kan en del av kolumnerna sakna information 
+                                för de sekvensträffar som visas.
+                            </h:panelGroup>  
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                I ordning visas katalognummer i 
+                                <h:link value="Naturarv" fragment="naturarv" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="Katalognr" fragment="katalognr" style="text-decoration: none; color: #8B8786; " />), 
+                                det vetenskapliga namnet med länk till 
+                                <h:link value="Naturforskaren" fragment="naturforskaren" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="Vetenskapligt namn" fragment="vetenskapligtnamn" style="text-decoration: none; color: #8B8786; " />), namn på 
+                                den genregion träffsekvensen representerar 
+                                (<h:link value="Markör" fragment="markor" style="text-decoration: none; color: #8B8786; " />), 
+                                accessionsnummer och länk till sekvens i 
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="GenBank acc." fragment="genbankacc"  style="text-decoration: none; color: #8B8786; " />), ID nummer och länk till sekvens i 
+                                <h:link value="BOLD" fragment="bold" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="BOLD sekv. ID" fragment="boldsekvid" style="text-decoration: none; color: #8B8786; " />), procentuell likhet 
+                                (<h:link value="Likhet" fragment="likhet" style="text-decoration: none; color: #8B8786; " />), 
+                                poäng (<h:link value="Poäng" fragment="poang" style="text-decoration: none; color: #8B8786; " />), samt 
+                                E-värde (<h:link value="E-värde" fragment="evalue" style="text-decoration: none; color: #8B8786; " />). 
+                                De tre sista kolumnerna är detaljer relaterade 
+                                till <h:link value="BLAST" fragment="blast" style="text-decoration: none; color: #8B8786; " />-algoritmen.
+                            </h:panelGroup> 
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Om man expanderar raden för träffsekvensen (genom att klicka på pilsymbolen i vänsterkant), och träffsekvensen har länkade data till andra databaser, 
+                                visas ytterligare information. Bland annat kan information från naturarv visas (Samling, Svenskt namn, Lokal, Koordinater, Datum, Insamlare). Utöver 
+                                detta kan knappen Karta visa fyndplatsens koordinater på    
+                                <h:outputLink  value="https://maps.google.se/" title="Google Maps"  target="_blank" style="text-decoration: none; color: #8B8786; ">Google Maps</h:outputLink>   
+                                knappen Bilder visar klickbara bilder lagrade i Naturarv (högerklickar man på bilden ges fler länkar till ytterligare databaser). Slutligen visar knappen 
+                                <h:link value="Linjering" fragment="linjering" style="text-decoration: none; color: #8B8786; " /> 
+                                en grafisk jämförelse (linjering) mellan positionerna i den del där frågesekvensen ("Query") och träffsekvensen ("Subjc") visar hög likhet.
+                            </h:panelGroup> 
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Om ingen matchning sker mellan sekvenserna i databasen och frågesekvensen - det kan tex ske om frågesekvensen representerar en helt annan gen än som 
+                                för närvarande finns representerade i databaserna - då visas en länk med följande text "Det går inte att matcha några poster i den valda databasen! 
+                                Pröva en Sökning i genbank". Om man klickar på "Sök i GenBank" så påbörjas en ny BLAST-sökning (med standardinställningar) på GenBanks 
+
+                                <h:outputLink  value="#{blast.ncbiBlastportalUrl}"  title="BLAST-portal"  target="_blank" style="text-decoration: none; color: #8B8786; ">BLAST-portal</h:outputLink>,  
+                                och därefter genereras en ny länk till resultatet.
+                            </h:panelGroup>  
+                            <br />  
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Nedan följer en lista över de nyckelord och begrepp som nämns på DNA-nyckelns sidor. 
+                            </h:panelGroup> 
+                            <br /><br />   
+                        </h:panelGroup>
+
+                        <h:panelGroup styleClass="column2 lonecolumn" layout="block" rendered="#{!languages.isSwedish}">
+
+                            <h:panelGroup  styleClass="header"  layout="block" >
+                                <h:outputText value="On the DNA key" /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Using the DNA key search tools one can perform similarity searches between an unknown DNA sequence (so-called 
+                                <h:link value="query sequence" fragment="querysequence" style="text-decoration: none; color: #8B8786; "/>) and a large number of sequences stored in a several 
+                                <h:link value="databases" fragment="database" style="text-decoration: none; color: #8B8786; " />. The search method used here is 
+                                <h:link value="BLAST" fragment="blast" style="text-decoration: none; color: #8B8786; "/>, a statistical method for quickly finding sequence regions, or 
+                                <h:link value="hit sequences" fragment="hitsequences" style="text-decoration: none; color: #8B8786; "/>, with high similarity.
+                            </h:panelGroup>    
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                The results of a search are displayed as a list of the top 10 hits in the selected database for each query sequence. Currently there is a limitation in the 
+                                maximum number of sequences (100) that can be used for an individual search.
+                            </h:panelGroup>   
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                If the search finds sequences in the database with sufficiently high  
+                                <h:link value="similarity" fragment="likhet" style="text-decoration: none; color: #8B8786; " /> (≥99%), then the results are displayed, with the data 
+                                provided on the sequence from the database as a table with a number of clickable links. Depending on the database that is used, some of the columns have no 
+                                information for the displayed hit sequences.
+                            </h:panelGroup>  
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Data fields, in the order of display, are catalog number in the 
+                                <h:link value="Naturarv" fragment="naturarv" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="CatalogNo" fragment="katalognr" style="text-decoration: none; color: #8B8786; " />), 
+                                the scientific name with link to  
+                                <h:link value="Naturforskaren" fragment="naturforskaren" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="Scientific name" fragment="vetenskapligtnamn" style="text-decoration: none; color: #8B8786; " />), the name of the gene region represented by the hit sequence 
+                                (<h:link value="Marker" fragment="markor" style="text-decoration: none; color: #8B8786; " />), 
+                                accession number and link to the sequence in 
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="GenBank acc." fragment="genbankacc"  style="text-decoration: none; color: #8B8786; " />), ID number and link to the sequence in 
+                                <h:link value="BOLD" fragment="bold" style="text-decoration: none; color: #8B8786; " />
+                                (<h:link value="BOLD Seq. ID" fragment="boldsekvid" style="text-decoration: none; color: #8B8786; " />), percentage similarity 
+                                (<h:link value="similarity" fragment="likhet" style="text-decoration: none; color: #8B8786; " />), 
+                                score (<h:link value="Score" fragment="poang" style="text-decoration: none; color: #8B8786; " />), as well as  
+                                E-value (<h:link value="E-value" fragment="evalue" style="text-decoration: none; color: #8B8786; " />). 
+                                The last three columns are the details related to the 
+                                <h:link value="BLAST" fragment="blast" style="text-decoration: none; color: #8B8786; " /> algorithm.
+                            </h:panelGroup> 
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                If one expands the row for the hit sequence (by clicking on the arrow symbol on the left side), and the hit sequence has links to data in other databases, additional 
+                                information will be displayed. Among other things, information from https://www.dina-web.net/naturarv/ will be shown (Collection, Swedish names, Local, Coordinates, Date, Collector). In addition, 
+                                the “Map” button shows location coordinates on 
+                                <h:outputLink  value="https://maps.google.se/" title="Google Maps"  target="_blank" style="text-decoration: none; color: #8B8786; ">Google Maps</h:outputLink>   
+                                The “Images” button displays clickable images stored in “Naturarv” (right click on the picture shows more links to additional databases). Finally, the  
+                                <h:link value="Alignment" fragment="linjering" style="text-decoration: none; color: #8B8786; " /> 
+                                button shows a graphical comparison (alignment) between positions in the parts where the query sequence ("Query") and the hit sequence ("Subjc") have high similarity.
+                            </h:panelGroup> 
+
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                If no match is made between the sequences in the database and query sequence - which can happen, for instance, when the query sequence represents a completely different 
+                                gene than is currently represented in the database - then a link is displayed with the following text “Can not match any records in the selected database! Try a search 
+                                of GenBank.” If you click on “Search GenBank” a new BLAST search (with default settings) is performed on GenBank's 
+
+                                <h:outputLink  value="#{blast.ncbiBlastportalUrl}"  title="BLAST portal"  target="_blank" style="text-decoration: none; color: #8B8786; ">BLAST portal</h:outputLink>,  
+                                and then a new link to the results is generated.
+                            </h:panelGroup>  
+                            <br />  
+                            <h:panelGroup  styleClass="text"  layout="block" > 
+                                Below is a list of key words and concepts mentioned on DNA key webpages.
+                            </h:panelGroup> 
+                            <br /><br />   
+                        </h:panelGroup>  
+
+                        <h:panelGroup styleClass="column2 lonecolumn" layout="block" id="scrollSection">
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" style="font-size: 18px;" rendered="#{languages.isSwedish}"> 
+                                Ordlista<br />
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" style="font-size: 18px;" rendered="#{!languages.isSwedish}"> 
+                                Glossary<br />
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="16s">16S</span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" >  
+                                16S rRNA. Benämning för den genregion som kodar för en komponent i ribosomalt RNA (16S rRNA).
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}">  
+                                16S rRNA. Name for the gene region encoding a component of the ribosomal RNA (16S rRNA).
+                            </h:panelGroup>
+
+                            <br /> 
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="svenskaorganismer">
+                                    <h:outputText value="Barkodsekvenser för svenska organismer (Databas)" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Barcode sequences for Swedish organisms (database)" rendered="#{!languages.isSwedish}" />
+                                </span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Databas innehållande streckkodssekvenser från 
+                                <h:link value="Svenska ryggradsdjur" fragment="svenskaryggradsdjur" style="text-decoration: none; color: #8B8786; "/>  
+                                (COI och 16S), samt sekvenser från databasen 
+                                <h:link value="Barkodsekvenser från GenBank" fragment="genbankdatabas" style="text-decoration: none; color: #8B8786; "/>  
+                                som kommer från arter som påträffas i Sverige. Se <h:link value="Databas" fragment="database" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                Database containing barcode sequences from the 
+                                <h:link value="Swedish vertebrates" fragment="svenskaryggradsdjur" style="text-decoration: none; color: #8B8786; "/>  
+                                database (COI and 16S) as well as 
+                                <h:link value="barcode sequences from GenBank" fragment="genbankdatabas" style="text-decoration: none; color: #8B8786; "/>  
+                                for species encountered in Sweden. See <h:link value="Database" fragment="database" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <br /> 
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Barkodsgen<br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                Barcode gene<br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                Gene or gene region used in the database. See <h:link value="Marker" fragment="markor" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Synonymt med streckkodsgen (Eng. barcode gene). Se <h:link value="Markör" fragment="markor" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <br /> 
+
+                            <h:panelGroup  styleClass="subheader text" id="blastanchorpanelen" layout="block" >  
+                                <span id="blast">BLAST</span><br />   
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block"  rendered="#{languages.isSwedish}"> 
+                                Basic Local Alignment Search Tool (BLAST). Detaljerad information finns på 
+                                <h:outputLink  value="http://www.ncbi.nlm.nih.gov/books/NBK21097/" title="NCBI"  target="_blank" style="text-decoration: none; color: #8B8786; " >NCBI's websida</h:outputLink>   
+                                [Eng.]. Se även <h:link value="Sökmetod" fragment="sokmetod" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block"  rendered="#{!languages.isSwedish}"> 
+                                Basic Local Alignment Search Tool (BLAST). Detailed information is available at 
+                                <h:outputLink  value="http://www.ncbi.nlm.nih.gov/books/NBK21097/" title="NCBI"  target="_blank" style="text-decoration: none; color: #8B8786; " >NCBI's website</h:outputLink>   
+                                See also  <h:link value="Search method" fragment="sokmetod" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="bold">BOLD</span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Barcode of Life Database (<h:link value="BOLD" fragment="bold" style="text-decoration: none; color: #8B8786; " />). 
+                                Internationell sekvensdatabas innehållande streckkodssekvenser från djur, växter, svampar 
+                                samt andra organismer. Innehåller främst genregioner från generna 
+                                <h:link value="COI" fragment="coi"  style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="matK" fragment="matk" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="ITS" fragment="its" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                Barcode of Life Database (BOLD). International sequence database containing barcode sequences from animals, plants, fungi and other organisms. Contains primarily gene 
+                                regions from the genes  
+                                <h:link value="COI" fragment="coi"  style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="matK" fragment="matk" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="ITS" fragment="its" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+
+
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="svenskaryggradsdjur"> 
+                                    <h:outputText value="Svenska ryggradsdjur (Databas)" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Swedish vertebrates (Database)" rendered="#{!languages.isSwedish}" />
+                                </span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Sekvensdatabas innehållande referenssekvenser hämtade från arter som förekommer i Sverige. Viktigt att notera är att sekvenserna i 
+                                denna databas kan vara hämtade från individer/prover som är tagna utanför sveriges gränser. Som exempel, om DNA-prov har saknats 
+                                för en svenskfångad individ av Åkersork, kan sekvensen i databasen härröra från en individ som fångats i Norge. Se 
+                                <h:link value="Databas" fragment="databas" style="text-decoration: none; color: #8B8786; "/>. 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                Sequence database containing reference sequences derived from species that occur in Sweden. Important to note is that the sequences 
+                                in this database can be downloaded from individuals/samples that were collected outside of Sweden. For example, when lacking a DNA sample 
+                                for a Swedish-caught individual of a vole species, the sequence in the database originated from an individual caught in Norway. See 
+                                <h:link value="Database" fragment="databas" style="text-decoration: none; color: #8B8786; "/>. 
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="boldsekvid">
+                                    <h:outputText value="BOLD sekv. ID" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="BOLD sequence ID" rendered="#{!languages.isSwedish}" />
+                                </span> <br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Specifikt ID-nummer för sekvens i internationella streckkodsdatabasen <h:link value="BOLD" fragment="bold" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                Unique ID number for the sequence in the international barcode database, <h:link value="BOLD" fragment="bold" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="coi">COI</span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Benämning för den mitokondriella genregion som kodar för proteinet Cytochrome c oxidase I. Används som streckkodsgen för främst 
+                                Metazoa (flercelliga djur).
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                Description of the mitochondrial gene region that encodes the protein cytochrome c oxidase I. Used as a barcode gene primarily for Metazoa (multicellular animals).
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="database"> 
+                                    <h:outputText value="Databas" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Database" rendered="#{!languages.isSwedish}" />
+                                </span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                De uppladdade frågesekvenserna jämförs med referenssekvenser i någon av DNA-nyckelns databaser. Den mest tillförlitliga databasen, 
+                                <h:link value="Svenska ryggradsdjur" fragment="svenskaryggradsdjur" style="text-decoration: none; color: #8B8786; " />,
+                                är framtaget av svenska institutioner och har länkar till information i svenska naturhistoriska samlingar. 
+                                I dag omfattar databasen bland annat 
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; " /> - och <h:link value="16S" fragment="16s" style="text-decoration: none; color: #8B8786; " />-sekvenser över svenska ryggradsdjur, 
+                                och fler organismgrupper tillkommer kontinuerligt. Vi använder också sekvenser från internationella referensbibliotek. I dagsläget 
+                                använder vi streckkodsgener hämtade från 
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />
+                                (alla sekvensposter med nyckelordet "BARCODE". Motsvarar generna 
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="matK" fragment="matk" style="text-decoration: none; color: #8B8786; " />). Sekvenserna från GenBank läggs samman 
+                                med sekvenserna i Svenska ryggradsdjur, och lagras i databasen 
+                                <h:link value="Barkodsekvenser från GenBank" fragment="genbankdatabas" style="text-decoration: none; color: #8B8786; " />. 
+                                Denna databas innehåller således sekvenser från COI, rbcL, matk, samt 16S. DNA-nyckeln tillhandahåller även en databas med fokus 
+                                på vilka arter som påträffas i Sverige, 
+                                <h:link value="Barkodsekvenser för svenska organismer" fragment="svenskaorganismer" style="text-decoration: none; color: #8B8786; " />.  
+                                Denna databas består av Svenska ryggradsdjur, samt de sekvenser från Barkodsekvenser från GenBank
+                                som kommer från arter påträffade i Sverige 
+                                (se <h:link value="Dyntaxa" fragment="dyntasa" style="text-decoration: none; color: #8B8786; " />). 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                The uploaded the query sequences are compared with the reference sequences in any of the DNA key databases. The most reliable database, 
+                                <h:link value="Swedish vertebrates" fragment="svenskaryggradsdjur" style="text-decoration: none; color: #8B8786; " />,
+                                was developed by Swedish institutions and has links to information in Swedish natural history collections. Today, the database includes  
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; " /> - and <h:link value="16S" fragment="16s" style="text-decoration: none; color: #8B8786; " /> sequences for Swedish vertebrates, 
+                                and more groups of organisms are added continuously. We also use sequences from the international reference library. In the current portal version, we use the barcode genes retrieved from 
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />
+                                (all sequence entries with the keyword "BARCODE" corresponding to the genes 
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; " />, 
+                                <h:link value="MatK" fragment="matk" style="text-decoration: none; color: #8B8786; " />). Sequences from GenBank are aggregated with sequences for Swedish vertebrates and stored in the database  
+                                <h:link value="Barcode sequences from GenBank" fragment="genbankdatabas" style="text-decoration: none; color: #8B8786; " />. 
+                                This database thus contains sequences from COI, rbcL, Matk, and 16S. DNA key also provides a database with a focus on the species that are found in Sweden, 
+                                <h:link value="Barcode sequences for Swedish organisms" fragment="svenskaorganismer" style="text-decoration: none; color: #8B8786; " />.  
+                                This database consists of Swedish vertebrates, as well as the sequences from “Barcode sequences from GenBank” from coming from species recorded in Sweden 
+                                (see <h:link value="Dyntaxa" fragment="dyntasa" style="text-decoration: none; color: #8B8786; " />). 
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="dyntaxa">Dyntaxa</span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                <h:outputLink  value="http://www.dyntaxa.se/" title="Dyntaxa"  target="_blank" style="text-decoration: none; color: #8B8786; ">Dyntaxa.se</h:outputLink>, 
+                                svensk taxonomisk databas över "Sveriges naturligt förekommande organismer". DNA-nyckeln använder denna källa för 
+                                att filtrera sekvenser från GenBank baserade på deras 
+                                <h:link value="vetenskapliga namn" fragment="vetenskapligtnamn" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                <h:outputLink  value="http://www.dyntaxa.se/" title="Dyntaxa"  target="_blank" style="text-decoration: none; color: #8B8786; ">Dyntaxa.se</h:outputLink>, 
+                                Swedish taxonomic database on "Sweden's indigenous organisms." The DNA key uses this source to filter sequences from GenBank based on their  
+                                <h:link value="scientific names" fragment="vetenskapligtnamn" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="evalue"> 
+                                    <h:outputText value="E-värde" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="E value" rendered="#{!languages.isSwedish}" />
+                                </span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Ett E-värde, eller "Expect value", ger ett mått på hur sannolikt en sökmetod förväntas hitta lika bra eller bättre träffar än 
+                                den uppvisade (givet storleken på databasen). Se även den 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="document"  target="_blank" style="text-decoration: none; color: #8B8786; " >officiella dokumentationen</h:outputLink> 
+                                på NCBI [Eng.]. 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                An E-value, or "Expected value", which is a measure of how likely a search method is expected to find as good or better results than the reported result 
+                                (given the size of the database). See also the 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="official documentation"  target="_blank" style="text-decoration: none; color: #8B8786; " >officiella dokumentationen</h:outputLink> 
+                                from NCBI.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                FASTA format<br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                A standardized format for gene sequence data. The information about each sequence consists of an information line that begins with ">", followed by the DNA sequence on one or 
+                                more subsequent lines. Currently the DNA key only supports using a DNA sequence as a search criterion. Examples of DNA sequences in FASTA format can be viewed by 
+                                using the auto-paste function for test sequences into the DNA key search field (tab "Testing the System"). See also 
+                                <h:outputLink  value="http://en.wikipedia.org/wiki/FASTA_format" title="Wikipedia"  target="_blank" style="text-decoration: none; color: #8B8786; " >Wikipedia link</h:outputLink>. 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Standardiserat format för gensekvensdata. Informationen om varje enskild sekvens består av en informationsrad som börjar med ">", 
+                                och följs av själva DNA-sekvensen på en eller fler efterföljande rader. För närvarande tillåter DNA-nyckeln enbart DNA-sekvenser 
+                                att användas som fråga vid sökningen. Exempel på DNA sekvenser i FASTA format kan ses genom att använda automatiskt klistra in 
+                                testsekvenser i DNA-nyckelns sökruta (fliken "Testa systemet"). Se även 
+                                <h:outputLink  value="http://en.wikipedia.org/wiki/FASTA_format" title="Wikipedia"  target="_blank" style="text-decoration: none; color: #8B8786; " >Wikipedialänk</h:outputLink> [Eng.]. 
+                            </h:panelGroup>
+
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="querysequence">
+                                    <h:outputText value="Fråga/Frågesekvens" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Query/Query Sequence" rendered="#{!languages.isSwedish}" />
+                                </span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Här avses den 
+                                <h:link value="sekvens" fragment="sekvenser" style="text-decoration: none; color: #8B8786; " />
+                                (eller dess beskrivning) som används i sökningen mot DNA-nyckelns databaser. Se även 
+                                <h:link value="Sökmetod" fragment="sokmetod" style="text-decoration: none; color: #8B8786; " />. 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                This refers to the  
+                                <h:link value="sequence" fragment="sekvenser" style="text-decoration: none; color: #8B8786; " />
+                                (or its description) used in the searches of DNA key databases. See also 
+                                <h:link value="Search method" fragment="sokmetod" style="text-decoration: none; color: #8B8786; " />. 
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="genbank">GenBank</span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Här avses den databas av DNA-sekvenser ("nr") som finns på The National Center for Biotechnology Information 
+                                (<h:outputLink  value="http://www.ncbi.nlm.nih.gov/" title="NCBI"  target="_blank" style="text-decoration: none; color: #8B8786; ">NCBI</h:outputLink>).
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                This refers to the database of DNA sequences ("nr") available from The National Center for Biotechnology Information 
+                                (<h:outputLink  value="http://www.ncbi.nlm.nih.gov/" title="NCBI"  target="_blank" style="text-decoration: none; color: #8B8786; ">NCBI</h:outputLink>).
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="genbankacc">GenBank acc.</span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Accessionsnummer för en specifik sekvens på 
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                Accession number for a specific sequence in 
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="its">ITS</span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Internal transcribed spacer (ITS).  Benämning för en genregion på ribosomen. Används som streckkodsgen för främst svampar.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                Internal transcribed spacer (ITS). Name for a gene region on the ribosome. Used as streckkodsgen mainly fungi.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="katalognr">
+                                    <h:outputText value="Katalognr" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="CatalogNo" rendered="#{!languages.isSwedish}" />
+                                </span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Katalognummer i den nationella naturhistoriska samlingsdatabasen 
+                                <h:outputLink  value="https://www.dina-web.net/naturarv/" title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; " >Naturarv</h:outputLink>.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                Catalog number in the national natural history collections database 
+                                <h:outputLink  value="https://www.dina-web.net/naturarv/" title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; " >Naturarv</h:outputLink>.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="likhet">
+                                    <h:outputText value="Likhet" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Similarity" rendered="#{!languages.isSwedish}" />
+                                </span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Ett mått på hur väl BLAST kan matcha en frågesekvens mot en träffsekvens. Här avses den maximala procentuella likheten mellan en 
+                                frågesekvens och en träffsekvens i den region de uppvisar en sk signifikant 
+                                <h:link value="linjering" fragment="linjering" style="text-decoration: none; color: #8B8786; "/>.  
+                                Se även den officiella 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="document"  target="_blank" style="text-decoration: none; color: #8B8786; ">BLAST dokumentationen</h:outputLink> 
+                                på NCBI [Eng.]. 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                A measure of how well the BLAST can match a query sequence against a hit sequence. This refers to the maximum rate of similarity between a query sequence and a hit sequence in 
+                                the region where they have significant 
+                                <h:link value="alignment" fragment="linjering" style="text-decoration: none; color: #8B8786; "/>.  
+                                See also the official 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="document"  target="_blank" style="text-decoration: none; color: #8B8786; ">BLAST documentation</h:outputLink> 
+                                from NCBI.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" >  
+                                <span id="linjering">
+                                    <h:outputText value="Linjering" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Alignment" rendered="#{!languages.isSwedish}" />
+                                </span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                En jämförelse mellan två eller fler gensekvenser där man sökt att identifiera positionell likhet och identitet. 
+                                [Eng. 
+                                <h:outputLink  value="http://en.wikipedia.org/wiki/Sequence_alignment" title="document"  target="_blank" style="text-decoration: none; color: #8B8786; ">Alignment</h:outputLink>].
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                A comparison between two or more sequences intended to identify positional similarity and identity. [Eng. 
+                                <h:outputLink  value="http://en.wikipedia.org/wiki/Sequence_alignment" title="document"  target="_blank" style="text-decoration: none; color: #8B8786; ">Alignment</h:outputLink>].
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" >  
+                                <h:outputText value="Längd" rendered="#{languages.isSwedish}" />
+                                <h:outputText value="Length" rendered="#{!languages.isSwedish}" />
+                                <br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                Här avses längden, antalet baser, av DNA-sekvensen.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                This refers to the length, the number of bases, in a DNA sequence.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="markor">
+                                    <h:outputText value="Markör" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Marker" rendered="#{!languages.isSwedish}" />
+                                </span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"  > 
+                                Gen eller genregion som används i databasen. De vanligaste sk "streckkodsgenerna", eller synonymt "barkodgenerna", är 
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; "/> för Metazoa (flercelliga djur), 
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; "/> och <h:link value="matK" fragment="matk" style="text-decoration: none; color: #8B8786; "/> för landlevande växter. 
+                                Utöver dessa används ofta <h:link value="16S" fragment="16s" style="text-decoration: none; color: #8B8786; "/> för prokaryoter (encelliga organismer, eubakterier, arkéer) och 
+                                <h:link value="ITS" fragment="its" style="text-decoration: none; color: #8B8786; " /> för svampar. 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"  > 
+                                Gene or gene region used in the database. The most commonly known markers used as "barcode genes" are 
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; "/> for Metazoa (multicellular animals) or  
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; "/> and <h:link value="matK" fragment="matk" style="text-decoration: none; color: #8B8786; "/> 
+                                for terrestrial plants. In addition to these, <h:link value="16S" fragment="16s" style="text-decoration: none; color: #8B8786; "/> and 
+                                <h:link value="ITS" fragment="its" style="text-decoration: none; color: #8B8786; " /> are frequently used for prokaryotes (single-celled organisms, eubacteria, archaea) and fungi, respectively.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="matk">matK</span><br />   
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Maturase K (matK). Benämning för den genregion i växters kloroplast som kodar för ett protein, intron maturase. Används som streckkodsgen 
+                                för främst växter.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                Maturase C (Matk). Name for the gene region of the plant chloroplast sequence encoding a protein, the intron maturase. Used as a barcode gene primarily for plants.
+                            </h:panelGroup>
+
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="naturarv">Naturarv</span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"> 
+                                <h:outputLink  value="https://www.dina-web.net/naturarv/" title="Naturarv.se"  target="_blank" style="text-decoration: none; color: #8B8786; ">
+                                    naturarv
+                                </h:outputLink>. Sökportal för de naturhistoriska samlingar i Sverige som ingår i 
+                                <h:outputLink  value="http://www.dina-project.net/cgi-bin/view/Main/WebHome" title="DINA"  target="_blank" style="text-decoration: none; color: #8B8786; ">DINA samarbetet</h:outputLink>.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"> 
+                                <h:outputLink  value="https://www.dina-web.net/naturarv/" title="Naturarv.se"  target="_blank" style="text-decoration: none; color: #8B8786; ">
+                                    naturarv
+                                </h:outputLink>. Portal for natural history collections in Sweden from the  
+                                <h:outputLink  value="http://www.dina-project.net/cgi-bin/view/Main/WebHome" title="DINA"  target="_blank" style="text-decoration: none; color: #8B8786; ">DINA project collaboration</h:outputLink>.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="naturforskaren">Naturforskaren</span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}">  
+                                <h:outputLink  value="http://naturforskaren.se" title="Naturforskaren.se"  target="_blank" style="text-decoration: none; color: #8B8786; ">Naturforskaren.se</h:outputLink>. Artsidor på nätet om Nordens och Baltikums organismer.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}">  
+                                <h:outputLink  value="http://naturforskaren.se" title="Naturforskaren.se"  target="_blank" style="text-decoration: none; color: #8B8786; ">Naturforskaren.se</h:outputLink>. 
+                                Species pages online about Nordic and Baltic organisms.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="poang">
+                                    <h:outputText value="Poäng" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Score" rendered="#{!languages.isSwedish}" />
+                                </span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"  > 
+                                Ett mått på hur väl BLAST kan matcha en frågesekvens mot en träffsekvens. Poängen avgörs på hur stor skillnad det är mellan 
+                                frågesekvensen och träffsekvens i den 
+                                <h:link value="linjering" fragment="linjering" style="text-decoration: none; color: #8B8786; " />
+                                som utgör själva träffen i databasen. Generellt gäller att ju högre värde, 
+                                desto bättre matchning. Se även den 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="document"  target="_blank" style="text-decoration: none; color: #8B8786; " >officiella dokumentationen</h:outputLink> på NCBI [Eng.].  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"  > 
+                                A measure of how well BLAST can match a query sequence with a hit sequence. The score describes how much difference there is between the query sequence and hit sequence in the 
+                                <h:link value="alignment" fragment="linjering" style="text-decoration: none; color: #8B8786; " />
+                                that constitutes the actual database match. Generally, the higher the value, the better the match. See also the 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="document"  target="_blank" style="text-decoration: none; color: #8B8786; " >official documentation</h:outputLink> at NCBI.  
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="rbcl">rbcL</span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                RuBisCO large subunit. Benämning för den region i växters kloroplast som kodar för en del (large-chain) av enzymet RuBisCO. 
+                                Används som streckkodsgen för främst växter.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                RuBisCO large subunit. Name for the region in the plant chloroplast sequence encoding a portion (large-chain) of the enzyme RuBisCO. Used as a barcode gene primarily for plants.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="genbankdatabas">
+                                    <h:outputText value="Barkodsekvenser från GenBank (Databas)" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Barcode sequences from GenBank (Database)" rendered="#{!languages.isSwedish}" />
+                                </span><br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"  > 
+                                Databas innehållande streckkodsgener (alla sekvensposter med nyckelordet "BARCODE", motsvarar generna 
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; " />,
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; " />, och 
+                                <h:link value="matK" fragment="matk" style="text-decoration: none; color: #8B8786; " />)  hämtade från 
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />, samt alla sekvenser i databasen 
+                                <h:link value="Svenska ryggradsdjur" fragment="svenskaryggradsdjur" style="text-decoration: none; color: #8B8786; "/>. 
+                                Denna databas innehåller således sekvenser från COI, rbcL, matk, samt 
+                                <h:link value="16S" fragment="16s" style="text-decoration: none; color: #8B8786; " />. Detta är den största databasen i DNA-nyckeln, men samtidigt saknas detaljerad 
+                                information om sekvensursprung etc för många poster. Se även 
+                                <h:link value="Databas" fragment="databas" style="text-decoration: none; color: #8B8786; " />. 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"  > 
+                                Database containing barcode genes (all sequence entries with the keyword 'BARCODE', corresponding to the genes 
+                                <h:link value="COI" fragment="coi" style="text-decoration: none; color: #8B8786; " />,
+                                <h:link value="rbcL" fragment="rbcl" style="text-decoration: none; color: #8B8786; " />, och 
+                                <h:link value="matK" fragment="matk" style="text-decoration: none; color: #8B8786; " />) retrieved from  
+                                <h:link value="GenBank" fragment="genbank" style="text-decoration: none; color: #8B8786; " />, and all sequences in the database 
+                                <h:link value="Swedish vertebrates" fragment="svenskaryggradsdjur" style="text-decoration: none; color: #8B8786; "/>. 
+                                This database thus contains sequences from COI, rbcL, Matk, and 
+                                <h:link value="16S" fragment="16s" style="text-decoration: none; color: #8B8786; " />. This is the largest database used in the DNA key, but no precise information concerning 
+                                sequence origins, etc. for many items. See also 
+                                <h:link value="Database" fragment="databas" style="text-decoration: none; color: #8B8786; " />. 
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="sekvenser">
+                                    <h:outputText value="Sekvenser" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Sequences" rendered="#{!languages.isSwedish}" />
+                                </span> <br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                DNA sekvenser (A, C, G, T) angivna i gemener eller versaler. Osäkra/tvetydiga positioner anges med s.k. 
+                                <h:outputLink  value="http://www.bioinformatics.org/sms/iupac.html" title="IUPAC-symboler"  target="_blank" style="text-decoration: none; color: #8B8786; ">IUPAC-symboler</h:outputLink>.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                DNA sequences (A, C, G, T) specified in uppercase or lowercase. Uncertain/ambiguous positions indicated by the so-called 
+                                <h:outputLink  value="http://www.bioinformatics.org/sms/iupac.html" title="IUPAC-symboler"  target="_blank" style="text-decoration: none; color: #8B8786; ">IUPAC-symboler</h:outputLink>.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="streckkodsgen">
+                                    <h:outputText value="Streckkodsgen" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Barcode gene" rendered="#{!languages.isSwedish}" />
+                                </span> <br />  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Synonymt med barkodsgen (Eng. barcode gene). Se <h:link value="Markör" fragment="markör" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                Synonymous with barkodsgen (Eng. Barcode generation).  See <h:link value="Markör" fragment="markör" style="text-decoration: none; color: #8B8786; "/>.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <h:outputText value="Svenskt namn" rendered="#{languages.isSwedish}" />
+                                <h:outputText value="Swedish name" rendered="#{!languages.isSwedish}" />
+                                <br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}"  > 
+                                Den svenska benämningen på en art. Se även <h:link value="Vetenskapligt namn" fragment="vetenskapligtnamn" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}"  > 
+                                The Swedish vernacular name for a species. See also <h:link value="scientific name" fragment="vetenskapligtnamn" style="text-decoration: none; color: #8B8786; " />.
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="sokmetod">
+                                    <h:outputText value="Sökmetod" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Search method" rendered="#{!languages.isSwedish}" />
+                                </span> <br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                För att söka i DNA-nyckelns databaser används statistiska sökmetoder där en 
+                                <h:link value="frågesekvens" fragment="querysequence" style="text-decoration: none; color: #8B8786; " />
+                                söker efter liknande sekvenser i en databas. 
+                                Om en liknande sekvens kan hittas i sökningen så har man hittat en eller flera 
+                                <h:link value="träffsekvenser" fragment="hitsequences" style="text-decoration: none; color: #8B8786; " />. Standardmetoden är 
+                                <h:link value="BLAST" fragment="blast" style="text-decoration: none; color: #8B8786; " /> som jämför likheten mellan sekvenser och rapporterar dess statistiska signifikans bla i form av 
+                                <h:link value="poäng" fragment="poang" style="text-decoration: none; color: #8B8786; " /> och <h:link value="E-värden" fragment="evalue" style="text-decoration: none; color: #8B8786; " />. I DNA-nyckeln används den 
+                                version av BLAST algoritmen som är anpassad för sökning mellan DNA-DNA sekvenser (blastn) och implementerad i mjukvaran 
+                                <h:outputLink  value="#{blast.ncbiBlastPlusDocument}" title="BLAST+"  target="_blank" style="text-decoration: none; color: #8B8786; " >BLAST+</h:outputLink>, 
+                                version 2.2.30+. Se även den 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="BLAST+"  target="_blank" style="text-decoration: none; color: #8B8786; " >officiella dokumentationen</h:outputLink> på NCBI [Eng.].  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                To search the DNA key databases, statistical search methods are used where a 
+                                <h:link value="query" fragment="querysequence" style="text-decoration: none; color: #8B8786; " />
+                                sequence is matched with similar sequences in a database. If a similar sequence can be found in the search, then one has found one or more 
+                                <h:link value="hit sequences" fragment="hitsequences" style="text-decoration: none; color: #8B8786; " />. The default search method is 
+                                <h:link value="BLAST" fragment="blast" style="text-decoration: none; color: #8B8786; " /> which compares the similarity between sequences and reports its statistical significance as, among these measures, 
+                                <h:link value="scores" fragment="poang" style="text-decoration: none; color: #8B8786; " /> and <h:link value="E-values" fragment="evalue" style="text-decoration: none; color: #8B8786; " />. 
+                                The DNA key applies the version of the BLAST algorithm developed for search between DNA-DNA sequences (blastn) and implemented in the software 
+                                <h:outputLink  value="#{blast.ncbiBlastPlusDocument}" title="BLAST+"  target="_blank" style="text-decoration: none; color: #8B8786; " >BLAST+</h:outputLink>, 
+                                version 2.2.30+. version 2.2.28+. See also the 
+                                <h:outputLink  value="#{blast.ncbiBlastDocument}" title="BLAST+"  target="_blank" style="text-decoration: none; color: #8B8786; " >official documentation</h:outputLink> from NCBI.  
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="hitsequences">
+                                    <h:outputText value="Träffsekvens" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Hit sequence" rendered="#{!languages.isSwedish}" />
+                                </span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                Den sekvens i databasen som har hög eller högst likhet med <h:link value="frågesekvensen" fragment="querysequence" style="text-decoration: none; color: #8B8786; "/>.  
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                The sequence in the database as having high or highest similarity to the <h:link value="query sequence" fragment="querysequence" style="text-decoration: none; color: #8B8786; "/>.  
+                            </h:panelGroup>
+
+                            <br />
+
+                            <h:panelGroup  styleClass="subheader text"  layout="block" > 
+                                <span id="vetenskapligtnamn">
+                                    <h:outputText value="Vetenskapligt namn" rendered="#{languages.isSwedish}" />
+                                    <h:outputText value="Scientific name" rendered="#{!languages.isSwedish}" />
+                                </span><br /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{languages.isSwedish}" > 
+                                En arts vetenskapliga namn. Anges vanligtvis som ett sk binomen, tex 
+                                "<font style="font-style: italic;">Microtus agrestis</font>". 
+                                Som referens till vilka arter som förekommer i Sverige 
+                                använder DNA-nyckeln den lista som tillhandahålls av 
+                                <h:outputLink  value="http://www.dyntaxa.se/" title="Dyntaxa"  target="_blank" style="text-decoration: none; color: #8B8786; ">Dyntaxa.se</h:outputLink>. 
+                            </h:panelGroup>  
+
+                            <h:panelGroup  styleClass="text"  layout="block" rendered="#{!languages.isSwedish}" > 
+                                A species' scientific name. Usually stated as a binomen, e.g., 
+                                "<font style="font-style: italic;">Microtus agrestis</font>". 
+                                As a reference to the species occurring in Sweden, the DNA key uses the list provided by
+                                <h:outputLink  value="http://www.dyntaxa.se/" title="Dyntaxa"  target="_blank" style="text-decoration: none; color: #8B8786; ">Dyntaxa.se</h:outputLink>. 
+                            </h:panelGroup>    
+                        </h:panelGroup> 
+                    </h:panelGroup>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

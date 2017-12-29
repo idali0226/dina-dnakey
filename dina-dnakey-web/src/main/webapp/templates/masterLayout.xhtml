@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:f="http://java.sun.com/jsf/core"    >
+
+    <h:head >  
+        <link rel="shortcut icon" type="image/x-icon" href="http://localhost:8181/resources/images/favicon.ico"/>
+        <title>
+            #{msg.headername} 
+        </title>   
+         
+    </h:head> 
+
+    <f:view locale="#{languages.locale}"  > 
+         
+        <h:body styleClass="background"> 	     
+            <h:outputStylesheet library="css" name="dnakey.css"  />
+
+            <div style="width: 960px; margin: auto;"> 
+                <div id="header" style="width: 960px; float: left; ">
+                    <ui:insert name="header" >
+                        <ui:include src="/pages/header.xhtml" />
+                    </ui:insert> 
+                </div> 
+
+                <div id="topmenu" style="width: 100%;   ">
+                    <ui:insert name="topmenu" >
+                        <ui:include src="/pages/topMenu.xhtml" />
+                    </ui:insert> 
+                </div> 
+                <div id="topImages" style="width: 100%;   ">
+                    <ui:insert name="images" >
+                        <ui:include src="/pages/images.xhtml" />
+                    </ui:insert>  
+                </div> 
+
+                <div id="main" >
+                    <ui:insert name="content"/>
+                </div>  
+
+                <div id="footer" >
+                    <ui:insert name="footer" >
+                        <ui:include src="/pages/footer.xhtml" />
+                    </ui:insert>
+                </div>
+
+            </div>
+
+        </h:body>
+    </f:view>
+</html>

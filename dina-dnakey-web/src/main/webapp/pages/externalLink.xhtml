@@ -1,0 +1,294 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+        <ui:composition  template="/templates/masterLayout.xhtml">    
+            <ui:define name="content"  >   
+                
+                <h:form  id="linkForm"> 
+                    <p:remoteCommand 
+                        action="#{navigate.resetTopMenuCSS(3)}" 
+                            value="Set topmenu css" autoRun="true" />
+                </h:form>
+                 
+                <!-- ************************************** external links page ************************************* --> 
+                <h:panelGroup styleClass="columns" layout="block" id="linkpanel" >
+
+                <h:panelGroup styleClass="column2 lonecolumn" layout="block"  rendered="#{languages.isSwedish}">
+                    <h:panelGroup  styleClass="header"  layout="block" >
+                        <h:outputText value="Länkar"  />  
+                    </h:panelGroup>
+
+                    <h:panelGroup  styleClass="subheader text"  layout="block" >
+                        <h:outputText value="Finansiella bidragsgivare" />  
+                    </h:panelGroup>  
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.formas.se"   title="Forskningsrådet Formas"  target="_blank" >  
+                            <h:outputText value="Forskningsrådet Formas"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.naturvardsverket.se/"   title="Naturvårdsverket"  target="_blank" >  
+                            <h:outputText value="Naturvårdsverket"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.havochvatten.se"   title="Havs- och vattenmyndigheten"  target="_blank" >  
+                            <h:outputText value="Havs- och vattenmyndigheten"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <p:spacer height="30"/>
+
+                    <h:panelGroup  styleClass="subheader text"  layout="block" >
+                        <h:outputText value="Samarbetspartners" />  
+                    </h:panelGroup>  
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.gu.se"   title="Göteborgs Universitet"  target="_blank" >  
+                            <h:outputText value="Göteborgs Universitet"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.gnm.se"   title="Göteborgs naturhistoriska museum"  target="_blank" >  
+                            <h:outputText value="Göteborgs naturhistoriska museum"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.slu.se/artdatabanken/"   
+                                      title="Artdatabanken"  target="_blank" >  
+                            <h:outputText value="Artdatabanken"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <p:spacer height="30"/>
+                    <h:panelGroup styleClass="text subheader" layout="block" >
+                        <h:outputText value="Globala initiativ"  />  
+                    </h:panelGroup>
+
+                    <h:panelGroup styleClass="text" layout="block" >
+                        Här finner du länkar till globala initiativ och resurser av olika slag. BOLD är den globala databasen för 
+                        streckkodsdata som tillhandahåller en identifieringsmotor där du liksom på svenska dna nyckeln kan klistra 
+                        in dina okända sekvenser och få dem "matchade" mot referensdatabasen. 
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.boldsystems.org/"   title="BOLD: Barcode of Life Datasystem"  target="_blank" >  
+                            <h:outputText value="BOLD: Barcode of Life Datasystem"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink  value="http://ibol.org/"   target="_blank" >  
+                            <h:outputText value="iBOL: International Barcode of Life"   /><br />    
+                        </h:outputLink> 
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink  value="http://www.barcodeoflife.org/content/about/what-cbol" title="CBOL: Consortium for the Barcode of Life"  target="_blank" >  
+                            <h:outputText value="CBOL: Consortium for the Barcode of Life"   /><br />    
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.barcodeoflife.org/"  title="Barcode of Life Website" target="_blank" >  
+                            <h:outputText value="Barcode of Life Website"   /><br />    
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink id="dinaspecieslink" value="http://connect.barcodeoflife.net/"  title="Barcode of Life Community Network" target="_blank" >  
+                            <h:outputText value="Barcode of Life Community Network"   />   <br />  
+                        </h:outputLink>   
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.fungalbarcoding.org/"  title="International Fungal Working Group" target="_blank" >  
+                            <h:outputText value="International Fungal Working Group"   /><br />    
+                        </h:outputLink>  
+                    </h:panelGroup> 
+                    <p:spacer height="30"/> 
+                    <h:panelGroup styleClass="text subheader" layout="block" >
+                        <h:outputText value="Nationella initiativ"  />  
+                    </h:panelGroup>
+
+                    <h:panelGroup styleClass="text" layout="block" > 
+                        <h:outputText value="Här nedan listas några länkar till nationella DNA streckkodningsinitiativ i olika länder. "  />  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.finbol.org/"  title="FINBOL: Finnish Barcode of Life"   target="_blank" >  
+                            <h:outputText value="FINBOL: Finnish Barcode of Life"   />   
+                        </h:outputLink>   <br />
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.norbol.org/" title="NORBOL: Norwegian Barcode of Life"  target="_blank" >  
+                            <h:outputText value="NORBOL: Norwegian Barcode of Life"   />   
+                        </h:outputLink>   <br />
+                    </h:panelGroup> 
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.bolnet.ca" title="Canadian Barcode of Life Network"  target="_blank" >  
+                            <h:outputText value="Canadian Barcode of Life Network"   />   
+                        </h:outputLink>  <br />
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="https://www.bolgermany.de/" title="GBOL: German Barcode of Life"  target="_blank" >  
+                            <h:outputText value="GBOL: German Barcode of Life"   />   
+                        </h:outputLink>  <br />
+                    </h:panelGroup> 
+                </h:panelGroup>
+
+                <h:panelGroup styleClass="column2 lonecolumn" layout="block"  rendered="#{!languages.isSwedish}">
+                    <h:panelGroup  styleClass="header"  layout="block" >
+                        <h:outputText value="Links"  />  
+                    </h:panelGroup>
+                    <h:panelGroup  styleClass="subheader text"  layout="block" >
+                        <h:outputText value="Financial support" />  
+                    </h:panelGroup>  
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.formas.se/en/"   title="The Swedish Research Council Formas"  target="_blank" >  
+                            <h:outputText value="The Swedish Research Council Formas"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.swedishepa.se"   title="The Swedish Environmental Protection Agency"  target="_blank" >  
+                            <h:outputText value="The Swedish Environmental Protection Agency"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.havochvatten.se/en/"   title="The Swedish Agency for Marine and Water Management"  target="_blank" >  
+                            <h:outputText value="The Swedish Agency for Marine and Water Management"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <p:spacer height="30"/>
+
+                    <h:panelGroup  styleClass="subheader text"  layout="block" >
+                        <h:outputText value="Collaborators" />  
+                    </h:panelGroup>  
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.gu.se/english"   title="University of Gothenburg"  target="_blank" >  
+                            <h:outputText value="University of Gothenburg"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.gnm.se"   title="Gothenburg Museum of Natural History"  target="_blank" >  
+                            <h:outputText value="Gothenburg Museum of Natural History"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.slu.se/en/collaborative-centres-and-projects/artdatabanken/"   
+                                      title="The Swedish Species Information Centre works with biodiversity"  target="_blank" >  
+                            <h:outputText value="The Swedish Species Information Centre works with biodiversity"   />  <br /> 
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <p:spacer height="30"/>
+
+
+                    <h:panelGroup styleClass="text subheader" layout="block" >
+                        <h:outputText value="Global initiatives"  />  
+                    </h:panelGroup>
+
+                    <h:panelGroup styleClass="text" layout="block" > 
+                        Links to global initiatives and resources.  BOLD is the global database for DNA barcode data which also provides an identification engine where users can query the database with their own unknown sequences.
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.boldsystems.org/"  title="BOLD: Barcode of Life Datasystem"   target="_blank" >  
+                            <h:outputText value="BOLD: Barcode of Life Datasystem"   />   
+                        </h:outputLink>   <br />
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://ibol.org/"  title="iBOL: International Barcode of Life" target="_blank" >  
+                            <h:outputText value="iBOL: International Barcode of Life"   />   
+                        </h:outputLink>   <br />
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink  value="http://www.barcodeoflife.org/content/about/what-cbol" title="CBOL: Consortium for the Barcode of Life"  target="_blank" >  
+                            <h:outputText value="CBOL: Consortium for the Barcode of Life"   />   
+                        </h:outputLink>   <br />
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.barcodeoflife.org/" title="Barcode of Life Website"  target="_blank" >  
+                            <h:outputText value="Barcode of Life Website"   />   
+                        </h:outputLink>    <br />
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://connect.barcodeoflife.net/" title="Barcode of Life Community Network"  target="_blank" >  
+                            <h:outputText value="Barcode of Life Community Network"   />   
+                        </h:outputLink>  <br />
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.fungalbarcoding.org/" title="International Fungal Working Group"  target="_blank" >  
+                            <h:outputText value="International Fungal Working Group"   /><br />    
+                        </h:outputLink>  
+                    </h:panelGroup>
+
+                    <p:spacer height="30"/>
+
+
+                    <h:panelGroup styleClass="text subheader" layout="block" >
+                        <h:outputText value="National initiatives"  />  
+                    </h:panelGroup>  
+
+                    <h:panelGroup styleClass="text" layout="block" > 
+                        Some links to DNA Barcoding initiatives in other countries with a focus on national flora and fauna.
+                    </h:panelGroup>
+
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.finbol.org/"  title="FINBOL: Finnish Barcode of Life"   target="_blank" >  
+                            <h:outputText value="FINBOL: Finnish Barcode of Life"   />   
+                        </h:outputLink>  <br />
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.norbol.org/"  title="NORBOL: Norwegian Barcode of Life" target="_blank" >  
+                            <h:outputText value="NORBOL: Norwegian Barcode of Life"   />   
+                        </h:outputLink>  <br />
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="http://www.bolnet.ca" title="Canadian Barcode of Life Network"  target="_blank" >  
+                            <h:outputText value="Canadian Barcode of Life Network"   />   
+                        </h:outputLink>    <br />
+                    </h:panelGroup>
+
+                    <h:panelGroup   layout="block">
+                        <h:outputLink value="https://www.bolgermany.de/"  title="GBOL: German Barcode of Life" target="_blank" >  
+                            <h:outputText value="GBOL: German Barcode of Life"   />   
+                        </h:outputLink>   <br />
+                    </h:panelGroup>  
+                </h:panelGroup>
+            </h:panelGroup>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

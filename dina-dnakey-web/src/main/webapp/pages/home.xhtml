@@ -1,0 +1,215 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"  
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"  >
+    <body>
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content"  >  
+                
+                <script type='text/javascript' src='https://www.google.com/jsapi'></script> 
+        
+                <script type='text/javascript'> 
+                    google.load('visualization', '1', {'packages': ['geochart']});
+                    google.setOnLoadCallback(drawVisualizationMap);
+                    function drawVisualizationMap() {
+
+                        var data = google.visualization.arrayToDataTable([
+                                ['Latitude', 'Longitude', 'Value'], 
+                                <c:forEach var = "geoMapData" items = "${map.geoMap}" > 
+                                    [${geoMapData.latitude},${geoMapData.longitude},${geoMapData.count}],
+                                </c:forEach>
+                                ]);
+
+
+                                    var options = {
+                                        region: '154', // Northern Europe 
+                                        displayMode: 'markers',
+                                        datalessRegionColor: '#F7F8E0',
+                                        legend: {position: 'none'},
+                                        tooltip: {trigger: 'none'},
+                                        enableRegionInteractivity: false,
+                                        magnifyingGlass: {enable: false, zoomFactor: 5.0},
+                                        colorAxis: {colors: ['#D4B9DA', '#980043']}
+                                    };
+
+
+                            var container = document.getElementById('map_canvas');
+                            var geomap = new google.visualization.GeoChart(container);
+                            geomap.draw(data, options);
+                    };  
+                </script>  
+                
+                
+                <h:form id="sequenceform"  enctype="multipart/form-data" prependId="false" >  
+                    <p:remoteCommand 
+                                action="#{navigate.resetTopMenuCSS(0)}" 
+                                    value="Set topmenu css" autoRun="true" />
+                    
+                    <h:panelGroup layout="block" styleClass="text" style="float: left; width: 100%; "> 
+                        <!-- ************************************** main panel ************************************* -->  
+                        <h:panelGroup styleClass="main" layout="block" id="mainpanel" > 
+
+                            <!-- ************************************** start panel ************************************* --> 
+                            <h:panelGroup styleClass="columns" layout="block" id="startpanel" >
+
+                                <h:panelGroup styleClass="column1" layout="block" id="column1panel"> 
+                                    <h:panelGroup styleClass="text" layout="block"  > 
+                                        <h:outputText value="#{msg.blasttext1}" /> 
+
+                                        <h:commandLink action="#{navigate.scrollToClientId('streckkodsgen')}"  title="Streckkodsgener"  style="text-decoration: none; color: #8B8786; " >    
+                                            <h:outputText value="#{msg.blast}" />    
+                                        </h:commandLink> 
+                                        <h:outputText value="#{msg.blasttext2}" />  
+                                        <h:commandLink action="#{navigate.scrollToClientId('genbank')}"  title="Genbank" style="text-decoration: none; color: #8B8786; " >    
+                                            <h:outputText value="Genbank" />     
+                                        </h:commandLink> och 
+                                        <h:commandLink action="#{navigate.scrollToClientId('bold')}"  title="BOLD" style="text-decoration: none; color: #8B8786; " >    
+                                            <h:outputText value="BOLD" />   
+                                        </h:commandLink>.
+                                        <br />
+                                        <br />
+                                        <h:outputText value="#{msg.blasttext3}" /> 
+                                        <h:commandLink action="#{navigate.dnakey()}"  title="#{msg.blasttext4title}" style="text-decoration: none; color: #8B8786; ">    
+                                            <h:outputText value="#{msg.blasttext4}" />    
+                                        </h:commandLink>.   
+                                    </h:panelGroup>
+                                    
+                                    
+                                    <br />
+                                    <br />
+
+                                    <h:panelGroup layout="block" style="font-size: 12px;">
+                                        <h:outputText value="#{msg.testsequencesdesc}" />
+                                    </h:panelGroup> 
+                                    <h:panelGroup style="border: 1px solid #A8A8A8; float: left;"  layout="block">
+                                        <p:tabView id="tabView" >  
+                                            <p:ajax event="tabChange" listener="#{tabview.onTabChange}" update="testSequencPanel" global="false" />  
+                                    
+                                            <p:tab id="tab1" title="#{msg.tab1title}" >   
+                                                <h:panelGrid id="sequencepanel"  cellpadding="0" cellspacing="0"> 
+                                                    <h:panelGrid id="wrap" cellpadding="0" cellspacing="0">  
+                                                        <p:inputTextarea  id="sequence"  value="#{blast.sequence}" rows="15"  cols="92" styleClass="sequence" />
+                                                    </h:panelGrid>  
+                                                </h:panelGrid>  
+                                            </p:tab>   
+                                            
+                                            <ui:remove>
+                                            <p:tab id="tab2" title="#{msg.tab2title}" >   
+                                                <h:panelGrid width="450" style="padding: 10px 10px 10px 10px;"  > 
+                                                    <p:fileUpload fileUploadListener="#{blast.handleFileUpload}"  
+                                                                  mode="advanced" update=":sequenceform:tabView:uploadFileList" 
+                                                                  label="#{msg.uploadfastafile}" 
+                                                                  multiple="true" 
+                                                                  auto="true"
+                                                                  dragDropSupport="true" />     
+                                                </h:panelGrid>
+                                                <h:panelGrid  id="uploadFileList" >
+                                                    <p:panel style="border: none;" > 
+                                                        <ui:repeat value="#{blast.uploadedFiles}" var="file" > 
+                                                            <h:panelGrid columns="2" columnClasses="uploadfilecol1,uploadfilecol2" style="width: 400px;">
+                                                                <h:outputText value="#{file.fileName}" />    
+                                                                <p:commandLink actionListener="#{blast.removefile(file)}"  global="false"
+                                                                               title="#{msg.btnremovefile}"  update=":sequenceform:tabView:uploadFileList"   > 
+                                                                    <h:graphicImage name="images/button_remove.gif" /> 
+                                                                </p:commandLink> 
+                                                            </h:panelGrid> 
+                                                        </ui:repeat>  
+                                                    </p:panel>    
+                                                </h:panelGrid>
+                                                <hr  /> 
+                                            </p:tab>  
+</ui:remove>
+                                            <p:tab id="tab3" title="#{msg.tab3title}" >   
+                                                <h:panelGrid id="testSequencPanel"  cellpadding="0" cellspacing="0"> 
+
+                                                    <h:panelGrid columns="4" id="testSequencesDropdwonPanel"
+                                                                 style="float: left; padding-top: 5px; " 
+                                                                 cellpadding="0" cellspacing="0">  
+                                                        <h:outputLabel value="#{msg.generate}" style="padding-right: 5px;" />   
+                                                        <h:selectOneMenu id="numOfTestSeqs" value="#{tabview.numOfTestSeqs}">
+                                                            <f:selectItem itemLabel="0" itemValue="0" />
+                                                            <f:selectItem itemLabel="1" itemValue="1" />
+                                                            <f:selectItem itemLabel="2" itemValue="2" />
+                                                            <f:selectItem itemLabel="3" itemValue="3" />
+                                                            <f:selectItem itemLabel="4" itemValue="4" />
+                                                            <f:selectItem itemLabel="5" itemValue="5" />  
+                                                            <f:selectItem itemLabel="6" itemValue="6" /> 
+
+                                                            <p:ajax listener="#{blast.changeTestNumber}" update="testSequencesAreaPanel" /> 
+
+                                                        </h:selectOneMenu>
+
+                                                        <h:outputLabel value="#{msg.exemplesequences}"  style="padding-left: 5px; "/>   
+                                                    </h:panelGrid>  
+                                                    <h:panelGrid  cellpadding="0" cellspacing="0" id="testSequencesAreaPanel">  
+                                                        <p:inputTextarea  id="testSequencesArea"  value="#{tabview.testSequences}" rows="15"  cols="92" styleClass="sequence" />
+                                                    </h:panelGrid>  
+                                                </h:panelGrid> 
+                                            </p:tab>    
+                                                
+                                        </p:tabView>   
+
+                                        <h:panelGroup layout="block"  >
+                                            <p:spacer width="5" />
+                                            <h:outputLabel value="#{msg.searchindatabase}"  id="dbradioLabel" style="font-size: 13px;  font-weight:  bold;" />  
+ 
+                                            <p:outputPanel id="customPanel" style="font-size: 11px; ">
+                                                <p:selectOneRadio id="customRadio" value="#{blast.database}" layout="custom">  
+                                                    <f:selectItem itemLabel="#{msg.dinadatabase} [#{blast.nrmTotalSequence} #{msg.seqv}]" itemValue="nrm" />  
+                                                    <f:selectItem itemLabel="#{msg.bolddatabase} [#{blast.boldTotalSequence} #{msg.seqv}]"  itemValue="bold" />  
+                                                    <f:selectItem itemLabel="#{msg.genbankdatabase} [#{blast.genBankTotalSequence} #{msg.seqv}]" itemValue="genbank" />  
+                                                    <f:ajax listener="#{blast.databaseChanged}" event="change" execute="@this"  />  
+                                                </p:selectOneRadio>  
+
+                                                <h:panelGrid columns="3">  
+                                                    <p:radioButton id="opt1" for="customRadio" itemIndex="0"  />  
+                                                    <h:outputLabel for="opt1" id="opt1label" value="#{msg.dinadatabase} [#{blast.nrmTotalSequence} #{msg.seqv}]" />   
+                                                    <p:tooltip for="opt1label" value="#{msg.nrmdbradio}" 
+                                                               showEffect="fade" hideEffect="fade" styleClass="tooltip" />  
+
+                                                    <p:radioButton id="opt2" for="customRadio" itemIndex="1"/>  
+                                                    <h:outputLabel for="opt2" id="opt2label" value="#{msg.bolddatabase} [#{blast.boldTotalSequence} #{msg.seqv}]" />  
+                                                    <p:tooltip for="opt2label" value="#{msg.bolddbradio}" 
+                                                               showEffect="fade" hideEffect="fade" styleClass="tooltip" />  
+ 
+                                                    <p:radioButton id="opt3" for="customRadio" itemIndex="2"/>  
+                                                    <h:outputLabel for="opt3" id="opt3label" value="#{msg.genbankdatabase} [#{blast.genBankTotalSequence} #{msg.seqv}]" />  
+                                                    <p:tooltip for="opt3label" value="#{msg.genbankdbradio}" 
+                                                               showEffect="fade" hideEffect="fade" styleClass="tooltip" />   
+                                                </h:panelGrid>  
+                                            </p:outputPanel>
+                                            <br /> 
+                                            <h:panelGroup style="width: 100%; float: left; padding-bottom: 10px;" layout="block">
+                                                <p:spacer width="350" height="5" />
+                                                <p:commandButton actionListener="#{blast.clear}" 
+                                                                 title="#{msg.btnclear}" 
+                                                                 value="#{msg.btnclear}"  global="false"
+                                                                 update=":sequenceform:mainpanel"  styleClass="originalbutton"/>
+                                                <p:commandButton actionListener="#{blast.submit}" global="true" 
+                                                                 title="#{msg.btnsearch}"  value="#{msg.btnsearch}"   
+                                                                 update=":sequenceform:mainpanel" />  
+                                            </h:panelGroup>   
+                                        </h:panelGroup> 
+                                    </h:panelGroup>
+                           
+                                    
+                                    
+                                    
+                                    
+                                    
+                                </h:panelGroup>
+
+                                <h:panelGroup styleClass="column3" layout="block" id="column3panel">  
+                                    <h:panelGroup layout="block" id='map_canvas'></h:panelGroup> 
+                                </h:panelGroup>
+
+                            </h:panelGroup>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+        </ui:composition> 
+    </body>
+</html>
