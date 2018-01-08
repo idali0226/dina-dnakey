@@ -8,7 +8,7 @@ package se.nrm.dina.dnakey.logic;
 import java.io.BufferedReader;
 import java.io.IOException; 
 import java.io.InputStreamReader; 
-import javax.annotation.PostConstruct;
+import javax.annotation.PostConstruct; 
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
@@ -48,8 +48,7 @@ public class BlastDbInfoProducer {
         String nrmCount = getTotal(NRM_DB);
         String boldCount = getTotal(BOLD_DB);
         String genbankCount = getTotal(GENBANK_DB);
-        
-        log.info("total : {} -- {}", nrmCount, boldCount + " -- " + genbankCount);
+         
         blastDbVo = new BlasterDbVo(nrmCount, boldCount, genbankCount);
     } 
 
@@ -86,47 +85,6 @@ public class BlastDbInfoProducer {
                 process.destroy();
             }
         }
-        return null;
-
-
-            
-            
-             
-        
-        
-        
-//        InputStream is = null;
-//        BufferedReader in = null;
-//         
-//        Process process = null; 
-//        try {
-//            process = Runtime.getRuntime().exec(BlastHelpClass.getInstance().getBlastDbInfoCommand(config, db));
-//            is = process.getInputStream();
-//            in = new BufferedReader(new InputStreamReader(is));
-//             
-//            String line;
-//            while ((line = in.readLine()) != null) { 
-//                if (line.contains("sequences")) { 
-//                    return StringUtils.substringBefore(line, " sequences").trim();
-//                }
-//            } 
-//        } catch (IOException ex) {
-//            log.error(ex.getMessage());
-//        } finally {
-//            try {
-//                if (is != null) {
-//                    is.close();
-//                }
-//                if(in != null) {
-//                    in.close();
-//                }
-//                if(process != null && process.isAlive()) {
-//                    process.destroy();
-//                }
-//            } catch (IOException ex) {
-//                log.info(ex.getMessage());
-//            }
-//        } 
-//        return null;
-    }
+        return null; 
+    } 
 }

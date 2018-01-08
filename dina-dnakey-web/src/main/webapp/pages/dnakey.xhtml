@@ -14,7 +14,7 @@
                  
                 <!-- ************************************** what is dnakey page ************************************* --> 
                 <h:panelGroup styleClass="columns" layout="block" id="identifypanel"  >
-                <h:panelGroup styleClass="column2 lonecolumn" layout="block"  rendered="#{languages.isSwedish}"> 
+                <h:panelGroup styleClass="column1 lonecolumn" layout="block"  rendered="#{languages.isSwedish}"> 
 
                     <h:panelGroup  styleClass="header"  layout="block" >
                         <h:outputText value="Vad är DNA-streckkodning" /> 
@@ -86,7 +86,7 @@
                         För att en webportal som svenska DNA nyckeln ska fungera väl så krävs det ett välfyllt referensbibliotek med kända DNA sekvenser 
                         som okända sekvenser kan jämföras med. För det första så krävs att referensbiblioteket innehåller sekvenser av helst alla de arter 
                         i en organismgrupp som en okänd sekvens kan tänkas komma ifrån. Svenska DNA nyckeln startade som ett   
-                        <h:outputLink value="http://www.formas.se"   title="Forskningsrådet Formas"  target="_blank" style="text-decoration: none; color: #8B8786; ">  
+                        <h:outputLink value="http://www.formas.se"   title="Forskningsrådet Formas"  target="_blank" styleClass="linktext">  
                             <h:outputText value="Formas"   /> 
                         </h:outputLink>  
                         -finansierat projekt för att bygga upp ett referensbibliotek över Sveriges ryggradsdjur (fåglar, däggdjur, fiskar, groddjur, kräldjur). 
@@ -98,7 +98,7 @@
                         För det andra så ställs det höga kvalitetskrav på sekvenser som läggs in i en referensdatabas. Dessa kvalitetskrav har utarbetats i en 
                         internationell arbetsgrupp tillsatt av det internationella samarbetet inom CBOL (Consortium for the Barcode of Life). Det allra viktigaste 
                         kvalitetskravet, och det som skiljer en streckkoddatabas från  
-                        <h:outputLink value="http://www.ncbi.nlm.nih.gov/genbank"  title="Genbanken"  target="_blank" style="text-decoration: none; color: #8B8786; " >  
+                        <h:outputLink value="http://www.ncbi.nlm.nih.gov/genbank"  title="Genbanken"  target="_blank" styleClass="linktext" >  
                             <h:outputText value="Genbanken" /> 
                         </h:outputLink> , 
                         är att sekvenser ska vara kopplade till en så kallad "voucher" eller referensexemplar. Referensexemplaret är den djur-, växt- eller 
@@ -106,7 +106,7 @@
                         forskare ska kunna gå tillbaka till individen, låna, studera och verifiera eller bestämma om individen. Sekvenserna i svenska DNA nyckeln 
                         är därför kopplade till den svenska webportalen för föremål i naturhistoriska samlingar i Sverige, 
 
-                        <h:outputLink value="https://www.dina-web.net/naturarv/"   title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; ">  
+                        <h:outputLink value="https://www.dina-web.net/naturarv/"   title="Naturarv"  target="_blank" styleClass="linktext">  
                             naturarv
                         </h:outputLink> 
 
@@ -177,12 +177,12 @@
                     <h:panelGroup  styleClass="imgtext text"  layout="block" > 
                         Referensexemplaren som finns bevarade på Naturhistoriska Riksmuseet av blåkråka till vänster 
                         <h:outputLink value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20106015"  
-                                      title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; " >  
+                                      title="Naturarv"  target="_blank" styleClass="linktext" >  
                             <h:outputText  value="(Cat. id. NRM 20106015)"  styleClass="#{metadata.textColor}"  />    
                         </h:outputLink>   
                         och morkulla till höger 
                         <h:outputLink  value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20046331"  
-                                       title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; ">  
+                                       title="Naturarv"  target="_blank" styleClass="linktext">  
                             <h:outputText  value="(Cat. id. NRM 20046331)"  styleClass="#{metadata.textColor}"  />    
                         </h:outputLink>  
                         som de illustrerade streckkoderna ovan har sekvenserats ifrån. I detta fall var det en morkulla från Fibysjön utanför 
@@ -274,7 +274,7 @@
                     </h:panelGroup> 
                 </h:panelGroup>
 
-                <h:panelGroup styleClass="column2 lonecolumn" layout="block"  rendered="#{!languages.isSwedish}"> 
+                <h:panelGroup styleClass="column1 lonecolumn" layout="block"  rendered="#{!languages.isSwedish}"> 
 
                     <h:panelGroup  styleClass="header"  layout="block" >
                         <h:outputText value="What is DNA barcoding" /> 
@@ -343,7 +343,7 @@
                         For a web portal like the Swedish DNA key to function well, a well-stocked reference library of known DNA sequences is needed for comparison to unknown sequences. 
                         First, the reference library must contain sequences of at least all the species in a group of organisms from which an unknown sequence may have originated. 
                         The Swedish DNA key started as a  
-                        <h:outputLink value="http://www.formas.se"   title="The Swedish Research Council Formas"  target="_blank" style="text-decoration: none; color: #8B8786; ">  
+                        <h:outputLink value="http://www.formas.se"   title="The Swedish Research Council Formas"  target="_blank" styleClass="linktext">  
                             <h:outputText value="Formas"   /> 
                         </h:outputLink>  
                         -funded project to build a reference library for Swedish vertebrates (birds, mammals, fish, amphibians, and reptiles). For this organism group, the current Swedish 
@@ -354,14 +354,14 @@
                         <br />
                         Second, there are high quality standards for the sequences compiled in a reference database. These quality standards have been developed by an international working 
                         group of international cooperation in CBOL (Consortium for the Barcode of Life). The most important requirement, and what distinguishes a barcode database from 
-                        <h:outputLink value="http://www.ncbi.nlm.nih.gov/genbank"  title="GenBank"  target="_blank" style="text-decoration: none; color: #8B8786; " >  
+                        <h:outputLink value="http://www.ncbi.nlm.nih.gov/genbank"  title="GenBank"  target="_blank" styleClass="linktext" >  
                             <h:outputText value="GenBank" /> 
                         </h:outputLink> , 
                         is that the sequences are linked to a "voucher" or reference specimen. The reference specimen is the individual animal, plant or fungus from which the gene has been 
                         sequenced. This specimen is stored, curated and made available at a public institution where researchers can borrow or go study it in order to reassess the determination. 
                         Swedish DNA key sequences are linked to records presented in the Swedish web portal,
 
-                        <h:outputLink value="https://www.dina-web.net/naturarv/"   title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; ">  
+                        <h:outputLink value="https://www.dina-web.net/naturarv/"   title="Naturarv"  target="_blank" styleClass="linktext">  
                             naturarv
                         </h:outputLink> ,
 
@@ -436,12 +436,12 @@
                     <h:panelGroup  styleClass="imgtext text"  layout="block" > 
                         Reference specimens of a roller, left 
                         <h:outputLink value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20106015"  
-                                      title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; " >  
+                                      title="Naturarv"  target="_blank" styleClass="linktext" >  
                             <h:outputText  value="(Cat. id. NRM 20106015)"  styleClass="#{metadata.textColor}"  />    
                         </h:outputLink>   
                         and woodcock, on the right
                         <h:outputLink  value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20046331"  
-                                       title="Naturarv"  target="_blank" style="text-decoration: none; color: #8B8786; ">  
+                                       title="Naturarv"  target="_blank" styleClass="linktext">  
                             <h:outputText  value="(Cat. id. NRM 20046331)"  styleClass="#{metadata.textColor}"  />    
                         </h:outputLink> ,
                         for the barcodes illustrated above that are preserved at the Swedish Natural History Museum. In this case, it is a woodcock from Fibysjön, 

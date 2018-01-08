@@ -40,7 +40,7 @@
                             geomap.draw(data, options);
                     };  
                 </script>  
-                
+                <p:growl id="messages" autoUpdate="true" showDetail="true" showSummary="true" escape="false" sticky="true" />
                 
                 <h:form id="sequenceform"  enctype="multipart/form-data" prependId="false" >  
                     <p:remoteCommand 
@@ -58,20 +58,20 @@
                                     <h:panelGroup styleClass="text" layout="block"  > 
                                         <h:outputText value="#{msg.blasttext1}" /> 
 
-                                        <h:commandLink action="#{navigate.scrollToClientId('streckkodsgen')}"  title="Streckkodsgener"  style="text-decoration: none; color: #8B8786; " >    
+                                        <h:commandLink action="#{navigate.scrollToClientId('streckkodsgen')}"  title="Streckkodsgener" styleClass="linktext">    
                                             <h:outputText value="#{msg.blast}" />    
                                         </h:commandLink> 
                                         <h:outputText value="#{msg.blasttext2}" />  
-                                        <h:commandLink action="#{navigate.scrollToClientId('genbank')}"  title="Genbank" style="text-decoration: none; color: #8B8786; " >    
+                                        <h:commandLink action="#{navigate.scrollToClientId('genbank')}"  title="Genbank" styleClass="linktext" >    
                                             <h:outputText value="Genbank" />     
                                         </h:commandLink> och 
-                                        <h:commandLink action="#{navigate.scrollToClientId('bold')}"  title="BOLD" style="text-decoration: none; color: #8B8786; " >    
+                                        <h:commandLink action="#{navigate.scrollToClientId('bold')}"  title="BOLD" styleClass="linktext">    
                                             <h:outputText value="BOLD" />   
                                         </h:commandLink>.
                                         <br />
                                         <br />
                                         <h:outputText value="#{msg.blasttext3}" /> 
-                                        <h:commandLink action="#{navigate.dnakey()}"  title="#{msg.blasttext4title}" style="text-decoration: none; color: #8B8786; ">    
+                                        <h:commandLink action="#{navigate.dnakey()}"  title="#{msg.blasttext4title}" styleClass="linktext">    
                                             <h:outputText value="#{msg.blasttext4}" />    
                                         </h:commandLink>.   
                                     </h:panelGroup>
@@ -85,12 +85,12 @@
                                     </h:panelGroup> 
                                     <h:panelGroup style="border: 1px solid #A8A8A8; float: left;"  layout="block">
                                         <p:tabView id="tabView" >  
-                                            <p:ajax event="tabChange" listener="#{tabview.onTabChange}" update="testSequencPanel" global="false" />  
+                                            <p:ajax event="tabChange" listener="#{blast.onTabChange}" update="testSequencPanel" global="false" />  
                                     
                                             <p:tab id="tab1" title="#{msg.tab1title}" >   
                                                 <h:panelGrid id="sequencepanel"  cellpadding="0" cellspacing="0"> 
                                                     <h:panelGrid id="wrap" cellpadding="0" cellspacing="0">  
-                                                        <p:inputTextarea  id="sequence"  value="#{blast.sequence}" rows="15"  cols="92" styleClass="sequence" />
+                                                        <p:inputTextarea  id="sequence"  value="#{blast.sequence}" rows="20"  cols="92" styleClass="sequence" />
                                                     </h:panelGrid>  
                                                 </h:panelGrid>  
                                             </p:tab>   
@@ -128,7 +128,7 @@
                                                                  style="float: left; padding-top: 5px; " 
                                                                  cellpadding="0" cellspacing="0">  
                                                         <h:outputLabel value="#{msg.generate}" style="padding-right: 5px;" />   
-                                                        <h:selectOneMenu id="numOfTestSeqs" value="#{tabview.numOfTestSeqs}">
+                                                        <h:selectOneMenu id="numOfTestSeqs" value="#{blast.numOfTestSeqs}">
                                                             <f:selectItem itemLabel="0" itemValue="0" />
                                                             <f:selectItem itemLabel="1" itemValue="1" />
                                                             <f:selectItem itemLabel="2" itemValue="2" />
@@ -144,7 +144,7 @@
                                                         <h:outputLabel value="#{msg.exemplesequences}"  style="padding-left: 5px; "/>   
                                                     </h:panelGrid>  
                                                     <h:panelGrid  cellpadding="0" cellspacing="0" id="testSequencesAreaPanel">  
-                                                        <p:inputTextarea  id="testSequencesArea"  value="#{tabview.testSequences}" rows="15"  cols="92" styleClass="sequence" />
+                                                        <p:inputTextarea  id="testSequencesArea"  value="#{blast.testSequences}" rows="20"  cols="92" styleClass="sequence" />
                                                     </h:panelGrid>  
                                                 </h:panelGrid> 
                                             </p:tab>    
@@ -154,13 +154,14 @@
                                         <h:panelGroup layout="block"  >
                                             <p:spacer width="5" />
                                             <h:outputLabel value="#{msg.searchindatabase}"  id="dbradioLabel" style="font-size: 13px;  font-weight:  bold;" />  
- 
+                                            #{blast.database}
                                             <p:outputPanel id="customPanel" style="font-size: 11px; ">
+                       
                                                 <p:selectOneRadio id="customRadio" value="#{blast.database}" layout="custom">  
-                                                    <f:selectItem itemLabel="#{msg.dinadatabase} [#{blast.nrmTotalSequence} #{msg.seqv}]" itemValue="nrm" />  
-                                                    <f:selectItem itemLabel="#{msg.bolddatabase} [#{blast.boldTotalSequence} #{msg.seqv}]"  itemValue="bold" />  
-                                                    <f:selectItem itemLabel="#{msg.genbankdatabase} [#{blast.genBankTotalSequence} #{msg.seqv}]" itemValue="genbank" />  
-                                                    <f:ajax listener="#{blast.databaseChanged}" event="change" execute="@this"  />  
+                                                    <f:selectItem itemValue="nrm" />  
+                                                    <f:selectItem itemValue="bold" />  
+                                                    <f:selectItem itemValue="genbank" />   
+                                                    <p:ajax listener="#{blast.databaseChanged}" global="false" event="change" process="@this" /> 
                                                 </p:selectOneRadio>  
 
                                                 <h:panelGrid columns="3">  
@@ -188,23 +189,236 @@
                                                                  value="#{msg.btnclear}"  global="false"
                                                                  update=":sequenceform:mainpanel"  styleClass="originalbutton"/>
                                                 <p:commandButton actionListener="#{blast.submit}" global="true" 
-                                                                 title="#{msg.btnsearch}"  value="#{msg.btnsearch}"   
-                                                                 update=":sequenceform:mainpanel" />  
+                                                                 title="#{msg.btnsearch}"  value="#{msg.btnsearch}"      />  
                                             </h:panelGroup>   
                                         </h:panelGroup> 
                                     </h:panelGroup>
-                           
-                                    
-                                    
-                                    
-                                    
-                                    
+                            
+
                                 </h:panelGroup>
 
                                 <h:panelGroup styleClass="column3" layout="block" id="column3panel">  
                                     <h:panelGroup layout="block" id='map_canvas'></h:panelGroup> 
-                                </h:panelGroup>
 
+                                    <h:panelGroup   layout="block" styleClass="imgtext text" >
+                                        <h:outputText value="#{msg.regenmap}" />  
+                                    </h:panelGroup> 
+                                    <h:panelGroup   layout="block" style="font-size: 13px;  float: left;">
+                                        ----------------------------------------------------------------
+                                    </h:panelGroup>  
+                                    <br />
+
+                                    <h:panelGroup styleClass="text" layout="block">
+                                        <h:outputText value="#{msg.mark}: COI" />
+                                    </h:panelGroup>
+                                    <h:panelGroup   layout="block" style="  font-size: 10px;"> 
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.group}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="DNA" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="SWE" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="%" />
+                                        </h:panelGroup>
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.amphibians}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="3" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="13" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="23.1" />
+                                        </h:panelGroup> 
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.birds}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="448" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="548" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="81.8" />
+                                        </h:panelGroup> 
+
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.mammal}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="83" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="103" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="80.6" />
+                                        </h:panelGroup> 
+
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.fish}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="186" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="256" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="72.7" />
+                                        </h:panelGroup> 
+
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.reptiles}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="4" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="7" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="57.1" />
+                                        </h:panelGroup> 
+                                        <h:panelGroup   layout="block" style="font-size: 13px;  float: left;">
+                                            ----------------------------------------------------------------
+                                        </h:panelGroup>  
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.total}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="724" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="927" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="78.1" />
+                                        </h:panelGroup>  
+                                    </h:panelGroup> 
+
+                                    <p:spacer width="30" />
+                                    <h:panelGroup styleClass="text" layout="block">
+                                        <h:outputText value="#{msg.mark}: 16S" />
+                                    </h:panelGroup>
+                                    <h:panelGroup   layout="block" style="  font-size: 10px;"> 
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.group}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="DNA" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="SWE" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="%" />
+                                        </h:panelGroup>
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.amphibians}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="4" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="13" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="30.8" />
+                                        </h:panelGroup> 
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.birds}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="259" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="548" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="47.3" />
+                                        </h:panelGroup> 
+
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.mammal}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="58" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="103" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="56.3" />
+                                        </h:panelGroup> 
+
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.fish}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="149" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="256" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="58.2" />
+                                        </h:panelGroup> 
+
+                                        <br/>
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.reptiles}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="2" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="7" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="28.6" />
+                                        </h:panelGroup> 
+                                        <h:panelGroup   layout="block" style="font-size: 13px; float: left;" >
+                                            ----------------------------------------------------------------
+                                        </h:panelGroup>  
+                                        <h:panelGroup style="width: 85px; float: left;" layout="block">
+                                            <h:outputText value="#{msg.total}" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="472" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 65px; float: left;" layout="block">
+                                            <h:outputText value="927" />
+                                        </h:panelGroup>
+                                        <h:panelGroup style="width: 30px; float: right; padding-right: 10px;" layout="block">
+                                            <h:outputText value="50.9" />
+                                        </h:panelGroup>  
+                                    </h:panelGroup>
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <h:panelGroup styleClass="text" layout="block" style="float: left; font-size: 11px;">
+                                        #{msg.tablenotes} 
+                                    </h:panelGroup> 
+                                    
+                                </h:panelGroup>
+ 
                             </h:panelGroup>
                         </h:panelGroup>
                     </h:panelGroup>

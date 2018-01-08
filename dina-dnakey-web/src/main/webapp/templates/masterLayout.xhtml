@@ -9,12 +9,18 @@
         <link rel="shortcut icon" type="image/x-icon" href="http://localhost:8181/resources/images/favicon.ico"/>
         <title>
             #{msg.headername} 
-        </title>   
-         
+        </title>    
     </h:head> 
 
     <f:view locale="#{languages.locale}"  > 
-         
+
+        <ui:remove>
+            <f:metadata> 
+                <f:event listener="#{blast.init()}"  type="preRenderView"  /> 
+            </f:metadata>
+        </ui:remove>
+
+
         <h:body styleClass="background"> 	     
             <h:outputStylesheet library="css" name="dnakey.css"  />
 
@@ -44,8 +50,7 @@
                     <ui:insert name="footer" >
                         <ui:include src="/pages/footer.xhtml" />
                     </ui:insert>
-                </div>
-
+                </div> 
             </div>
 
         </h:body>
